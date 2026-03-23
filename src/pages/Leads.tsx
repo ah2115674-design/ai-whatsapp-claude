@@ -36,24 +36,25 @@ export function Leads() {
   }, [conversations]);
 
   const handleAiSuggest = async () => {
-    if (!selectedLead || conversations.length === 0 || isAiGenerating) return;
-    setIsAiGenerating(true);
-    try {
-      const lastMessages = conversations
-        .slice(-5)
-        .map((c) => `${c.sender}: ${c.message}`)
-        .join('\n');
-      const suggestion = await getAIChatResponse(
-        'Suggest a professional follow-up message to this lead based on our conversation history.',
-        `Lead Name: ${selectedLead.name || 'Unknown'}, Status: ${selectedLead.status}. History:\n${lastMessages}`
-      );
-      if (suggestion) setNewMessage(suggestion);
-    } catch (err) {
-      console.error('Error getting AI suggestion:', err);
-    } finally {
-      setIsAiGenerating(false);
-    }
-  };
+  if (!selectedLead || conversations.length === 0 || isAiGenerating) return;
+  setIsAiGenerating(true);
+  try {
+    const lastMessages = conversations
+      .slice(-5)
+      .map((c) => `${c.sender}: ${c.message}`)
+      .join('\n');
+    const suggestion = await getAIChatResponse(
+      'Suggest a professional follow-up message to this lead based on our conversation history.',
+      `Lead Name: ${selectedLead.name || 'Unknown'}, Status: ${selectedLead.status}. History:\n${lastMessages}`,
+      user.id
+    );
+    if (suggestion) setNewMessage(suggestion);
+  } catch (err) {
+    console.error('Error getting AI suggestion:', err);
+  } finally {
+    setIsAiGenerating(false);
+  }
+};
 
   useEffect(() => {
     if (!user) return;

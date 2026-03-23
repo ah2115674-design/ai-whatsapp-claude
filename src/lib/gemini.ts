@@ -1,8 +1,12 @@
-export async function getAIChatResponse(message: string, context: string): Promise<string> {
+export async function getAIChatResponse(
+  message: string,
+  context: string,
+  userId?: string
+): Promise<string> {
   const response = await fetch('/api/ai-suggest', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, context }),
+    body: JSON.stringify({ message, context, userId }),
   });
 
   if (!response.ok) {

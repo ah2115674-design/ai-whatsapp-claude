@@ -162,15 +162,34 @@ async function startServer() {
   // ── AI Suggest (used by Leads page "Suggest AI Reply" button) ─────────────
 
   app.post('/api/ai-suggest', async (req, res) => {
-    const { message, context } = req.body;
-    try {
-      const aiResponse = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a professional wholesale sales assistant. ${context}`,
-          },
+  const { message, context, userId } = req.body;
+  try {
+    // Fetch products for this user
+    let productCatalog = 'No products listed yet.';
+    if (userId) {
+      const { data: products } = await supabase
+        .from('products')
+        .select('name, description, price, moq, details')
+        .eq('user_id', userId);
+
+      if (products && products.length > 0) {
+        productCatalog = products.map(p =>
+          `- ${p.name}: ${p.description || 'No description'}. Price: $${p.price}, MOQ: ${p.moq} units.`
+        ).join('\n');
+      }
+    }
+
+    const aiResponse = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `You are a professional wholesale sales assistant.
+Product catalog:
+${productCatalog}
+
+${context}`,
+        },
           { role: 'user', content: message },
         ],
         temperature: 0.7,
@@ -254,14 +273,44 @@ async function startServer() {
         sender: 'customer',
       }]);
 
-      // Generate AI reply
-      let reply = 'Thank you for your message. We will get back to you shortly.';
-      try {
-        const aiResponse = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [{ role: 'user', content: `You are a professional sales assistant. Respond helpfully to: "${Body}"` }],
-          temperature: 0.7,
-        });
+      // 4. Fetch user's products to give AI context
+const { data: products } = await supabase
+  .from('products')
+  .select('name, description, price, moq, details')
+  .eq('user_id', userId);
+
+const productCatalog = products && products.length > 0
+  ? products.map(p =>
+      `- ${p.name}: ${p.description || 'No description'}. Price: $${p.price}, MOQ: ${p.moq} units.${p.details ? ' Details: ' + JSON.stringify(p.details) : ''}`
+    ).join('\n')
+  : 'No products listed yet.';
+
+// 5. Generate AI reply with product knowledge
+let reply = 'Thank you for your message. We will get back to you shortly.';
+try {
+  const aiResponse = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content: `You are a professional sales assistant for a wholesale manufacturer. 
+You help customers with product inquiries, pricing, and minimum order quantities.
+Always be helpful, professional, and concise.
+
+Here is the current product catalog:
+${productCatalog}
+
+Only answer questions based on the products listed above. 
+If asked about a product not in the catalog, politely say it is not available.
+If asked about pricing or MOQ, give the exact figures from the catalog.`
+      },
+      {
+        role: 'user',
+        content: Body
+      }
+    ],
+    temperature: 0.7,
+  });
         reply = aiResponse.choices[0].message.content || reply;
         console.log(`[Webhook] AI reply: ${reply}`);
       } catch (aiErr: any) {
