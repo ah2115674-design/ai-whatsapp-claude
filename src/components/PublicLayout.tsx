@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageSquare, Menu, X, ArrowRight } from 'lucide-react';
+import { MessageSquare, Menu, X } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {

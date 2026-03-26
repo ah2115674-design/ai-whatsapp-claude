@@ -69,7 +69,7 @@ export function Auth() {
           password: formData.password,
         });
         if (error) throw error;
-        navigate('/');
+        navigate('/dashboard');
       } else {
         const { error } = await supabase.auth.signUp({
           email: formData.email,
