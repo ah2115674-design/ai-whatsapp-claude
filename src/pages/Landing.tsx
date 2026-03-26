@@ -19,7 +19,7 @@ export function Landing() {
                 AI-Powered Sales Automation
               </span>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-zinc-900 mb-8">
-                Close more deals with <span className="text-emerald-600 italic">WhatsApp AI</span>
+                Close more deals with <span className="text-emerald-600 italic">ChatWiseCRM</span>
               </h1>
               <p className="text-xl text-zinc-600 mb-10 leading-relaxed max-w-2xl mx-auto">
                 The ultimate CRM for WhatsApp. Automate your leads, manage products, and let AI handle your customer conversations 24/7.

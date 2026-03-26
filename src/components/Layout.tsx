@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="p-6">
           <h1 className="text-xl font-bold text-zinc-900 flex items-center gap-2">
             <MessageSquare className="text-emerald-600" />
-            WholesaleAI
+            ChatWiseCRM
           </h1>
         </div>
 
@@ -89,7 +89,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-zinc-200 px-4 flex items-center justify-between z-50">
         <h1 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
           <MessageSquare className="text-emerald-600 w-5 h-5" />
-          WholesaleAI
+          ChatWiseCRM
         </h1>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -39,7 +39,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
               <MessageSquare className="text-white" size={20} />
             </div>
-            <span className="text-xl font-bold tracking-tight text-zinc-900">WhatsApp<span className="text-emerald-600">CRM</span></span>
+            <span className="text-xl font-bold tracking-tight text-zinc-900">ChatWise<span className="text-emerald-600">CRM</span></span>
           </Link>
 
           {/* Desktop Nav */}

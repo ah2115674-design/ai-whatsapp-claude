@@ -100,7 +100,7 @@ export function WhatsApp() {
           )}>
             <ShieldCheck size={24} />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900">Use WholesaleAI Numbers</h3>
+          <h3 className="text-lg font-bold text-zinc-900">Use ChatWiseCRM Numbers</h3>
           <p className="text-sm text-zinc-500 mt-2">
             Quick setup using our pre-configured Twilio numbers. Best for small to medium businesses.
           </p>
